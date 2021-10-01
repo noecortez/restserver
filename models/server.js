@@ -1,4 +1,5 @@
-const express = require('express');
+const express = require("express");
+const cors = require("cors");
 
 class Server {
   constructor() {
@@ -6,7 +7,7 @@ class Server {
     this.port = process.env.PORT;
 
     // endpoints
-    this.usuariosPath = '/api/usuarios';
+    this.usuariosPath = "/api/usuarios";
 
     // Middlewares
     this.middleware();
@@ -16,21 +17,25 @@ class Server {
   }
 
   middleware() {
+    // CORS
+    this.app.use(cors());
+
+    // Lectura y parseo del body
+    this.app.use(express.json());
+
     // Directorio público
-    this.app.use(express.static('public'));
+    this.app.use(express.static("public"));
   }
 
   routes() {
-    this.app.use(this.usuariosPath, require('../routes/user.routes'));
+    this.app.use(this.usuariosPath, require("../routes/user.routes"));
   }
 
   listen() {
     this.app.listen(this.port, () => {
-      console.log('Servidor corriendo en puerto', this.port);
+      console.log("Servidor corriendo en puerto", this.port);
     });
   }
 }
-
-
 
 module.exports = Server;
